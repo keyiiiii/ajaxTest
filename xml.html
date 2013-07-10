@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
+<head>
+<meta charset="utf-8" />
+<title>ajax</title>
+<style type="text/css">
+th,
+td {
+	border:1px solid #ccc;
+}
+</style>
+<script type="text/javascript" src="xmlhttp.js"></script>
+<script type="text/javascript"><!--
+function loadXMLFile(fName)
+{
+httpObj = createXMLHttpRequest(displayData);
+if (httpObj)
+{
+httpObj.open("GET",fName,true);
+httpObj.send(null);
+}
+}
+function displayData()
+{
+if ((httpObj.readyState == 4) && (httpObj.status == 200))
+{
+xmlData = httpObj.responseXML;
+userListTags = xmlData.getElementsByTagName("user");
+numberListTags = xmlData.getElementsByTagName("number");
+usernameListTags = xmlData.getElementsByTagName("username");
+userLen = userListTags.length; // 登録されているユーザー数
+
+resultText = ""; // データの内容を表示するための変数
+for(i=0; i<userLen; i++){
+num = numberListTags[i].childNodes[0].nodeValue;
+uname = usernameListTags[i].childNodes[0].nodeValue;
+resultText = resultText + "<tr><th>"  + num + " </th><td> " + uname + "</td></tr>";
+}
+$("result").innerHTML = resultText;
+}else{
+$("result").innerHTML = "<b>Loading...</b>";
+}
+}
+// --></script>
+</head>
+<body>
+<h1>ajax</h1>
+<p>XMLファイルを読み込み名前を表示します</p>
+<form name="ajaxForm">
+  <input type="button" value="name.xmlファイルを読み込み" onClick="loadXMLFile('file.xml')">
+  <br>
+</form>
+<table id="result"></table>
+</body>
+</html>

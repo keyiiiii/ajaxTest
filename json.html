@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
+<head>
+<meta charset="utf-8" />
+<title>ajax</title>
+<script type="text/javascript" src="xmlhttp.js"></script>
+<script type="text/javascript"><!--
+function loadDataFile(fName)
+{
+httpObj = createXMLHttpRequest(displayData);
+if (httpObj)
+{
+httpObj.open("GET",fName,true);
+httpObj.send(null);
+}
+}
+function displayData()
+{
+if ((httpObj.readyState == 4) && (httpObj.status == 200))
+{
+$("result").innerHTML = parseJSON(httpObj.responseText);
+}
+}
+// JSONのデータを解析して表示
+function parseJSON(jsData)
+{
+var data = eval("("+jsData+")");
+var resultData = "<table border='1'>";
+for(var i=0; i<data.item.length; i++)
+{
+var iCode = data.item[i].itemCode; // 商品コード
+var iName = data.item[i].itemName; // 商品名
+var iPrice = data.item[i].itemPrice; // 商品価格
+resultData += "<tr><th>"+iCode+"</th><td>"+iName+"</td><td>"+iPrice+"円</td></tr>";
+}
+resultData += "</table>";
+return resultData;
+}
+// --></script>
+</head>
+<body>
+<h1>JSONのデータを表示する2</h1>
+<p>JSONのデータを読み込み表示します</p>
+<form name="ajaxForm">
+<input type="button" value="jsondata.txtを読み込み" onClick="loadDataFile('jsondata.txt')"><br>
+</form>
+<div id="result"></div>
+</body>
+</html>
